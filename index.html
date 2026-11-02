@@ -1,314 +1,998 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sepak Takraw Guide</title>
-  <meta name="description" content="Learn sepak takraw: how to play, team sizes, positions, court and equipment, with typical prices.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sepak Takraw - Non-Traditional Games Unit</title>
+<meta name="description" content="Seven-slide sepak takraw PE presentation with history, equipment and budget, court and skills, rules and safety, a lesson plan, quiz, and video." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #ffffff;
+    --panel: #fbf5ef;
+    --ink: #24170e;
+    --ink-soft: #4e3d30;
+    --ink-mute: #7d6a5b;
+    --accent: #b9480f;
+    --accent-deep: #8a3208;
+    --accent-soft: #fcebdd;
+    --sand: #f6ecd4;
+    --sand-ink: #8a6a1f;
+    --flag: #0f766e;
+    --flag-soft: #e0f2ef;
+    --line: #ecdccd;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  /* ---------- Loading screen: ball rolling into the cup ---------- */
+  #loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+  }
+  #loader.hidden { opacity: 0; visibility: hidden; }
+  .loader-court {
+    position: relative;
+    width: 160px;
+    height: 90px;
+    border-bottom: 3px solid var(--accent);
+  }
+  .loader-net {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 3px;
+    height: 34px;
+    margin-left: -1.5px;
+    background: repeating-linear-gradient(var(--ink-soft) 0 4px, transparent 4px 7px);
+  }
+  .loader-ball {
+    position: absolute;
+    left: 14px;
+    bottom: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #f5c27a, #e9a23b 55%, #b9480f);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    animation: kick 1.6s ease-in-out infinite alternate;
+  }
+  @keyframes kick {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(57px, -68px) rotate(180deg); }
+    100% { transform: translate(114px, 0) rotate(360deg); }
+  }
+  .loader-text {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .loader-sub { font-size: 0.8rem; color: var(--ink-mute); }
+
+  /* ---------- Top header ---------- */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 2.5rem;
+    gap: 2rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .topic {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .topic .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .progress-wrap {
+    flex: 1;
+    max-width: 720px;
+    height: 4px;
+    background: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+  }
+  .counter {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink-mute);
+    white-space: nowrap;
+  }
+  .counter .current { color: var(--accent); }
+
+  /* ---------- Slide deck ---------- */
+  .deck { position: relative; width: 100vw; height: 100vh; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 6rem 5rem 4.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.4s ease, transform 0.5s ease, visibility 0s linear 0.4s;
+  }
+  .slide::-webkit-scrollbar { width: 6px; }
+  .slide::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+  .slide.active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 0.5s ease, transform 0.6s ease, visibility 0s;
+  }
+
+  /* Layouts */
+  .slide-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: 3.5rem;
+    height: 100%;
+    align-items: center;
+  }
+  .slide-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+  }
+  .slide-full {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  /* Eyebrow */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .eyebrow.flag { background: var(--flag-soft); color: #0b5953; }
+  .eyebrow.sand { background: var(--sand); color: var(--sand-ink); }
+
+  /* Titles */
+  h1.slide-title,
+  h2.slide-title {
+    font-size: clamp(1.9rem, 3.6vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .lede {
+    font-size: clamp(0.98rem, 1.2vw, 1.1rem);
+    color: var(--ink-soft);
+    max-width: 34em;
+    margin: 0 0 1.2rem;
+  }
+
+  /* Bullet lists */
+  .points {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.85rem;
+    max-width: 36em;
+  }
+  .points li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: clamp(1rem, 1.25vw, 1.18rem);
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .points li .tag { color: var(--ink); font-weight: 700; }
+
+  /* Numbered steps */
+  .steps {
+    counter-reset: stepcount;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+    max-width: 40em;
+  }
+  .steps li {
+    counter-increment: stepcount;
+    position: relative;
+    padding: 0.8rem 1rem 0.8rem 3.2rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    font-size: clamp(0.95rem, 1.15vw, 1.06rem);
+    color: var(--ink-soft);
+  }
+  .steps li::before {
+    content: counter(stepcount);
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.9rem;
+    height: 1.9rem;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 0.95rem;
+  }
+  .steps li strong { color: var(--ink); }
+
+  /* Coaching-cue cards */
+  .cues {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.7rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: 40em;
+  }
+  .cues li {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: clamp(0.86rem, 1.05vw, 0.98rem);
+    color: var(--ink-soft);
+  }
+  .cues li b {
+    display: block;
+    color: var(--ink);
+    font-size: 0.96em;
+    margin-bottom: 0.15rem;
+  }
+  .cues li .say {
+    display: block;
+    margin-top: 0.3rem;
+    color: var(--accent-deep);
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  /* Callout */
+  .callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.85rem 1.05rem;
+    margin: 0 0 1.2rem;
+    background: var(--flag-soft);
+    border: 1px solid #b5ddd6;
+    border-radius: 10px;
+    font-size: clamp(0.95rem, 1.15vw, 1.06rem);
+    font-weight: 600;
+    color: #0b5953;
+    max-width: 36em;
+  }
+  .callout.green {
+    background: var(--accent-soft);
+    border-color: #f1cdb2;
+    color: var(--accent-deep);
+  }
+  .callout .mark { font-size: 1.1em; line-height: 1.2; }
+
+  /* Score table */
+  .table-wrap { overflow-x: auto; max-width: 100%; }
+  table.data {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 40em;
+    font-size: clamp(0.85rem, 1.05vw, 0.98rem);
+  }
+  table.data.wide { max-width: 100%; }
+  table.data th, table.data td {
+    text-align: left;
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+    vertical-align: top;
+  }
+  table.data thead th {
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    border-bottom: 1px solid #f1cdb2;
+  }
+  table.data tbody tr:nth-child(even) { background: var(--panel); }
+  table.data td .name { color: var(--ink); font-weight: 700; }
+  .score-chip {
+    display: inline-block;
+    min-width: 2.6rem;
+    text-align: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85em;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+  }
+  .score-chip.over { background: var(--sand); color: var(--sand-ink); }
+  .score-chip.par { background: var(--panel); color: var(--ink-soft); }
+
+  /* Lesson timeline */
+  .timeline {
+    list-style: none;
+    margin: 0 0 0 0.5rem;
+    padding: 0;
+    max-width: 44em;
+    border-left: 2px solid var(--line);
+  }
+  .timeline li {
+    position: relative;
+    padding: 0 0 1.15rem 1.6rem;
+  }
+  .timeline li:last-child { padding-bottom: 0; }
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 0.3rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline .tl-head {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
+  .timeline .tl-time {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-deep);
+    background: var(--accent-soft);
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .timeline .tl-activity {
+    color: var(--ink);
+    font-weight: 700;
+    font-size: clamp(0.96rem, 1.1vw, 1.08rem);
+  }
+  .timeline .tl-task {
+    margin: 0.3rem 0 0;
+    color: var(--ink-soft);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+  }
+
+  /* Fact grid */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    max-width: 40em;
+  }
+  .facts li {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    color: var(--ink-soft);
+    font-size: clamp(0.85rem, 1.02vw, 0.96rem);
+  }
+  .facts .num {
+    display: block;
+    font-size: clamp(1.3rem, 2.1vw, 1.8rem);
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.15rem;
+  }
+
+  /* Hole diagram */
+  .diagram {
+    width: 100%;
+    max-width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 0.8rem;
+  }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .diagram .dlabel {
+    font: 600 15px 'Inter', sans-serif;
+    fill: var(--ink);
+  }
+  .diagram .dsub {
+    font: 500 12.5px 'Inter', sans-serif;
+    fill: #6e5a4a;
+  }
+
+  /* Slide image */
+  .media {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 74vh;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .media img {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .media figcaption {
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* Two-image stack */
+  .media-grid {
+    width: 100%;
+    height: 100%;
+    max-height: 74vh;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 0.7rem;
+  }
+  .media-grid figure {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-height: 0;
+  }
+  .media-grid img {
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+  .media-grid figcaption {
+    font-size: 0.74rem;
+    color: var(--ink-mute);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* Title slide */
+  .hero-title {
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin: 0 0 1.2rem;
+  }
+  .hero-tagline {
+    margin: -0.4rem 0 1.5rem;
+    font-size: clamp(1.05rem, 1.7vw, 1.4rem);
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+  .hero-points {
+    margin: 0 0 2rem;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .hero-points li {
+    font-size: clamp(1rem, 1.4vw, 1.2rem);
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .hero-author {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1.3rem;
+    border-radius: 8px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .hero-author .label {
+    color: var(--ink-mute);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  .hero-medium {
+    margin-top: 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .hero-img {
+    margin: 2.2rem auto 0;
+    width: 100%;
+    max-width: 620px;
+    height: 190px;
+  }
+  .hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+  }
+
+  /* Works cited */
+  .cited-note {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.7rem 1rem;
+    margin: 0 0 1.2rem;
+    background: var(--accent-soft);
+    border: 1px solid #f1cdb2;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+    max-width: 46em;
+  }
+  .cited-note strong { color: var(--accent-deep); }
+  .sources-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem 2.5rem;
+    max-width: 1180px;
+    margin: 0;
+    padding: 0;
+  }
+  .sources-list li {
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    line-height: 1.45;
+    list-style: none;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+  .sources-list li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0.55em;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .sources-list .name { color: var(--ink); font-weight: 700; margin-right: 0.3rem; }
+  .sources-list a {
+    color: var(--accent);
+    text-decoration: underline;
+    word-break: break-word;
+  }
+  .sources-list a:hover { color: var(--accent-deep); }
+  .credit-note {
+    margin: 1.1rem 0 0;
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    max-width: 60em;
+    line-height: 1.5;
+  }
+  .credit-note a { color: var(--ink-mute); }
+
+  /* Dot nav */
+  .dots {
+    position: fixed;
+    right: 1.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 40;
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--line);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .dot:hover { background: var(--ink-mute); }
+  .dot.active { background: var(--accent); transform: scale(1.4); }
+
+  /* Controls */
+  .controls {
+    position: fixed;
+    right: 2.5rem;
+    bottom: 1.6rem;
+    display: flex;
+    gap: 0.6rem;
+    z-index: 45;
+  }
+  .nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background 0.2s, border-color 0.2s, transform 0.15s, opacity 0.2s;
+  }
+  .nav-btn:hover { background: var(--panel); border-color: var(--ink-mute); }
+  .nav-btn:active { transform: scale(0.94); }
+  .nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .nav-btn svg { width: 18px; height: 18px; }
+
+  .hint {
+    position: fixed;
+    left: 2.5rem;
+    bottom: 1.9rem;
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    z-index: 45;
+  }
+  .hint kbd {
+    display: inline-block;
+    padding: 0.12rem 0.42rem;
+    margin: 0 0.1rem;
+    font-family: inherit;
+    font-size: 0.72rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    color: var(--ink-soft);
+  }
+
+  /* Responsive */
+  @media (max-width: 1250px) {
+    .slide { padding: 5.6rem 3rem 4.2rem; }
+    .slide-grid { gap: 2.2rem; }
+  }
+  @media (max-width: 860px) {
+    .slide { padding: 5.5rem 2rem 4.5rem; }
+    .slide-grid, .slide-center, .slide-full { height: auto; min-height: 100%; }
+    .slide-grid { grid-template-columns: 1fr; gap: 1.5rem; align-items: start; }
+    .media { max-height: 32vh; order: -1; }
+    .media-grid { max-height: 38vh; order: -1; }
+    .cues, .facts { grid-template-columns: 1fr; }
+    .sources-list { grid-template-columns: 1fr; }
+    .hint { display: none; }
+    .topbar { padding: 0.9rem 1.25rem; gap: 1rem; }
+    .controls { right: 1.25rem; bottom: 1rem; }
+    .dots { right: 0.7rem; }
+  }
+  @media (max-width: 860px) {
+    /* keep table columns readable: scroll the table instead of squeezing it */
+    table.data.wide { min-width: 680px; }
+    .table-wrap { -webkit-overflow-scrolling: touch; }
+  }
+  @media (max-width: 640px) {
+    .slide { padding: 5rem 1.25rem 4.5rem; }
+    .topic span:not(.dot) { display: none; }
+    .dots { display: none; }
+  }
+  @media (max-height: 780px) {
+    .slide { padding: 5.2rem 3.4rem 3.6rem; }
+    h1.slide-title, h2.slide-title { margin-bottom: 1.1rem; font-size: clamp(1.7rem, 3vw, 2.4rem); }
+    .eyebrow { margin-bottom: 1rem; }
+    .points { gap: 0.6rem; }
+    .cues { gap: 0.5rem; }
+    .cues li, .steps li { padding-top: 0.55rem; padding-bottom: 0.55rem; }
+    .steps { gap: 0.5rem; }
+    .facts li { padding: 0.65rem 0.85rem; }
+    table.data th, table.data td { padding: 0.45rem 0.7rem; }
+  }
+
+  /* Extended binder content follows the original deck's typography and palette. */
+  a { color: var(--accent-deep); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--flag); outline-offset: 4px; }
+  .slide-full, .slide-grid, .slide-center { height: auto; min-height: 100%; }
+  .slide-full { max-width: 1180px; margin: 0 auto; }
+  .slide-grid > * { min-width: 0; }
+  .slide-full .lede, .slide-full .points, .slide-full .cues, .slide-full .steps { max-width: 100%; }
+  .slide-full .points { max-width: 58em; }
+  .cues { margin: 0 0 1.3rem; }
+  .cues li { font-size: 1.05rem; padding: 1rem; }
+  .cues b { font-size: 1.1rem; margin-bottom: .5rem; }
+  .credit-note { color: var(--ink-soft); font-size: .88rem; }
+  .hero-title { font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05; margin: 0 0 1rem; }
+  .media { height: 55vh; }
+  .media figcaption a { color: var(--ink-soft); }
+  .dots { max-height: calc(100vh - 160px); overflow-y: auto; padding: 6px; }
+  .dots .dot { flex-shrink: 0; }
+  .action-link, .print-btn { display: inline-block; border: 1px solid var(--line); border-radius: 8px; padding: .7rem 1rem; background: var(--accent-soft); color: var(--accent-deep); font: inherit; font-weight: 600; cursor: pointer; }
+  .print-tools { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); display: flex; gap: .5rem; z-index: 45; }
+  .print-btn { font-size: .78rem; padding: .55rem .7rem; }
+  .worksheet { padding-left: 1.5rem; font-size: 1.05rem; }
+  .worksheet li { padding-left: .5rem; margin-bottom: 1rem; }
+  .answer-line { display: block; border-bottom: 1px solid var(--ink-mute); height: 1.5rem; max-width: 700px; }
+  @media (max-width: 1000px) { .hint { display: none; } .print-tools { left: 1.25rem; transform: none; } }
+  @media (max-width: 640px) { .slide { padding: 5rem 1.25rem 6rem; } .slide-grid .media { order: 0; height: 32vh; } .cues { grid-template-columns: 1fr; } .print-tools { bottom: 1rem; } .print-btn { font-size: .7rem; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  @page { size: landscape; margin: 12mm; }
+  @media print {
+    html, body { height: auto; overflow: visible; background: white; }
+    #loader, .topbar, .dots, .controls, .hint, .print-tools { display: none !important; }
+    .deck { width: auto; height: auto; }
+    .slide { position: relative; inset: auto; display: block; visibility: visible; opacity: 1; transform: none; overflow: visible; padding: 8mm 2mm; break-after: page; }
+    .slide:last-child { break-after: auto; }
+    .slide-full, .slide-grid, .slide-center { min-height: 0; height: auto; }
+    .slide-grid { grid-template-columns: 1.1fr 1fr; gap: 12mm; }
+    h1.hero-title { font-size: 40pt; }
+    h2.slide-title { font-size: 26pt; }
+    .points li, .lede, .cues li, .steps li { font-size: 12pt; }
+    .credit-note, .media figcaption { font-size: 9pt; }
+    .eyebrow { margin-bottom: 10pt; }
+    .media { height: 130mm; max-height: none; }
+    .media img { max-height: 110mm; }
+    .table-wrap { overflow: visible; }
+    table.data.wide { min-width: 0; font-size: 10pt; }
+    table.data th, table.data td { padding: 5pt 7pt; }
+    .worksheet { font-size: 12pt; }
+    .timeline .tl-activity, .timeline .tl-task { font-size: 11pt; }
+    .timeline li { break-inside: avoid; }
+    .print-handouts .slide { display: none; }
+    .print-handouts .slide.handout { display: block; }
+  }
+
+
+  details { margin-top: .75rem; border-top: 1px solid var(--line); padding-top: .65rem; }
+  summary { cursor: pointer; color: var(--accent-deep); font-weight: 600; }
+  summary:focus-visible { outline: 3px solid var(--flag); outline-offset: 3px; }
+  .detail-content { padding: 1rem 0; }
+  .detail-content .lede { font-size: 1rem; }
+  .diagram { margin: 0; min-width: 0; }
+  @media print { details { break-inside: auto; } summary { font-size: 12pt; } .detail-content { padding: 6pt 0; } .cues { grid-template-columns: 1fr 1fr; } .media { order: 0; } }
+</style>
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav">
-      <a href="#top" class="logo">Sepak<span>Takraw</span></a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">☰</button>
-      <ul id="nav-links" class="nav-links">
-        <li><a href="#what">What is it?</a></li>
-        <li><a href="#how">How to play</a></li>
-        <li><a href="#team">Team size</a></li>
-        <li><a href="#equipment">Equipment</a></li>
-        <li><a href="#calculator">Cost calculator</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main id="top">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-inner">
-        <p class="eyebrow">The kick volleyball of Southeast Asia</p>
-        <h1>Sepak Takraw</h1>
-        <p class="lede">Volleyball rules, soccer feet, and bicycle kicks over a net. Here's how to play it, who's on a team, and what gear you need (and what it costs).</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#how">Learn to play</a>
-          <a class="btn btn-ghost" href="#equipment">See the gear</a>
-        </div>
-      </div>
-      <svg class="hero-ball" viewBox="0 0 200 200" aria-hidden="true">
-        <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" stroke-width="6"/>
-        <g fill="none" stroke="currentColor" stroke-width="5" opacity=".85">
-          <circle cx="100" cy="55" r="22"/><circle cx="100" cy="145" r="22"/>
-          <circle cx="55" cy="100" r="22"/><circle cx="145" cy="100" r="22"/>
-          <circle cx="68" cy="68" r="18"/><circle cx="132" cy="68" r="18"/>
-          <circle cx="68" cy="132" r="18"/><circle cx="132" cy="132" r="18"/>
-          <circle cx="100" cy="100" r="16"/>
-        </g>
-      </svg>
-    </section>
+<div id="loader">
+  <div class="loader-court">
+    <div class="loader-net"></div>
+    <div class="loader-ball"></div>
+  </div>
+  <div class="loader-text">Loading presentation</div>
+  <div class="loader-sub">Sepak Takraw &middot; Non-Traditional Games</div>
+</div>
 
-    <!-- WHAT -->
-    <section id="what" class="section">
-      <div class="container">
-        <h2>What is sepak takraw?</h2>
-        <div class="two-col">
-          <p>Sepak takraw is a net sport where two teams kick a woven ball back and forth over a net, volleyball-style, but <strong>you can't use your hands or arms</strong>. Feet, knees, chest, and head only. The name mixes Malay (<em>sepak</em>, "kick") and Thai (<em>takraw</em>, "woven ball").</p>
-          <p>It's huge in Thailand, Malaysia, Indonesia, Myanmar, Laos, and the Philippines, and it's played at the Asian Games and SEA Games. The signature move is the <strong>spike</strong>: a player flips upside down and smashes the ball over the net with their foot.</p>
-        </div>
-        <ul class="stat-row">
-          <li><span class="stat">3</span><span class="stat-label">players on court (regu)</span></li>
-          <li><span class="stat">3</span><span class="stat-label">touches max per side</span></li>
-          <li><span class="stat">21</span><span class="stat-label">points to win a set</span></li>
-          <li><span class="stat">0</span><span class="stat-label">hands allowed</span></li>
-        </ul>
-      </div>
-    </section>
+<header class="topbar">
+  <div class="topic">
+    <span class="dot"></span>
+    <span>Sepak Takraw &middot; Non-Traditional Games Unit</span>
+  </div>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="counter"><span class="current" id="currentNum">01</span> / <span id="totalNum">07</span></div>
+</header>
 
-    <!-- HOW TO PLAY -->
-    <section id="how" class="section section-alt">
-      <div class="container">
-        <h2>How to play</h2>
-        <p class="section-lede">If you know volleyball, you already know 70% of this. Swap hands for feet and you're most of the way there.</p>
+<main class="deck" id="deck">
+<section class="slide" data-slide="1" aria-label="Sepak takraw"><div class="slide-grid"><div><div class="eyebrow">Non-Traditional Games</div><h1 class="hero-title">Sepak<br/>takraw</h1><p class="hero-tagline">Volleyball rules. No hands.</p><p class="lede">Kick, knee, and head a woven ball over a net in three touches or fewer.</p><div class="hero-author"><span class="label">Taught by</span><span>Andrew Taylor</span></div><p class="credit-note">Non-Traditional Games Unit</p></div><figure class="media"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Sepak_Takraw%2C_Laos%281%29.jpg/1280px-Sepak_Takraw%2C_Laos%281%29.jpg" alt="A player kicks the ball over a net during a village sepak takraw game in Laos"/><figcaption>Sepak takraw in a village in Laos<br/>Ekrem Canli / <a href="https://commons.wikimedia.org/wiki/File:Sepak_Takraw,_Laos(1).jpg" target="_blank" rel="noopener">Wikimedia Commons</a> / <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a>. Display crop.</figcaption></figure></div></section>
 
-        <ol class="steps">
-          <li>
-            <h3>Set up the court</h3>
-            <p>The court is <strong>13.4 m × 6.1 m</strong> (44 × 20 ft), the same size as a doubles badminton court, so any badminton court works. The net sits at about <strong>1.52 m</strong> for men and <strong>1.42 m</strong> for women. Each half has a <strong>service circle</strong> (30 cm radius) near the back.</p>
-          </li>
-          <li>
-            <h3>Serve it up</h3>
-            <p>The server (the <em>tekong</em>) stands with one foot in the service circle. A teammate at the net tosses the ball to them by hand, and the tekong kicks it over the net in one touch. The ball can't touch the net on the way over in most rule sets, and the tekong's planted foot has to stay in the circle until the kick.</p>
-          </li>
-          <li>
-            <h3>Three touches, no hands</h3>
-            <p>Each side gets up to <strong>3 touches</strong> to get the ball back over. Unlike volleyball, the <strong>same player can touch it more than once</strong>, even all three times. Any body part is legal except hands and arms (below the shoulder).</p>
-          </li>
-          <li>
-            <h3>Set and spike</h3>
-            <p>The classic pattern: receive with a kick or chest, set the ball high near the net, then the striker attacks with a <strong>roll spike</strong> (bicycle kick) or <strong>sunback spike</strong> (sole of the foot over the net). Headers count too.</p>
-          </li>
-          <li>
-            <h3>Score points</h3>
-            <p>It's <strong>rally scoring</strong>: every rally wins somebody a point. You win a point when the ball lands in on their side, or when they mess up: ball out, more than 3 touches, touching the net, crossing into the other half, or hitting it with a hand or arm.</p>
-          </li>
-          <li>
-            <h3>Win the match</h3>
-            <p>Matches are usually <strong>best of 3 sets</strong>. A set goes to <strong>21 points</strong>, win by 2 (capped at 25). If it goes to a third set, that one's usually played to <strong>15</strong>. Exact scoring and serve-rotation rules shift a bit between competitions and federation updates, so check the rules for your league.</p>
-          </li>
-        </ol>
+<section class="slide " data-slide="2" aria-label="History and organizations"><div class="slide-full"><div><div class="eyebrow">02 / The sport</div><h2 class="slide-title">History and organizations</h2><ul class="cues"><li><b>1400s / Sepak raga</b>The Malay Annals describe a rattan-ball kicking game in the Malacca Sultanate. Players kept the ball up in a circle, with no net.</li><li><b>1945 / Over the net</b>Hamid Mydin introduced a net version in Penang, Malaya, played on a badminton court.</li><li><b>1960 / One name, one rulebook</b>Delegates from Malaya, Singapore, Myanmar, and Thailand met in Kuala Lumpur and agreed on the name "sepak takraw."</li><li><b>1990 / Asian Games</b>Sepak takraw became an Asian Games medal sport in Beijing.</li></ul><p class="lede"><b>Name:</b> Malay <i>sepak</i> ("kick") + Thai <i>takraw</i> ("woven ball").<br/><b>ASTAF:</b> Asian Sepaktakraw Federation, formed 1965.<br/><b>ISTAF:</b> International Sepaktakraw Federation, formed 1988. It runs world events and the rulebook.</p><p class="credit-note">Sources: <a href="https://en.wikipedia.org/wiki/Sepak_takraw" target="_blank" rel="noopener">Sepak takraw (Wikipedia)</a>, <a href="https://en.wikipedia.org/wiki/International_Sepaktakraw_Federation" target="_blank" rel="noopener">ISTAF (Wikipedia)</a>.</p></div></div></section>
 
-        <h3 class="sub">Common faults</h3>
-        <div class="faults">
-          <div class="fault"><span aria-hidden="true">✋</span><p>Ball touches a hand or arm</p></div>
-          <div class="fault"><span aria-hidden="true">🕸️</span><p>Any player touches the net</p></div>
-          <div class="fault"><span aria-hidden="true">4️⃣</span><p>More than 3 touches on one side</p></div>
-          <div class="fault"><span aria-hidden="true">🚫</span><p>Stepping or reaching into the opponent's half</p></div>
-          <div class="fault"><span aria-hidden="true">⭕</span><p>Server's foot leaves the circle before the kick</p></div>
-          <div class="fault"><span aria-hidden="true">📏</span><p>Ball lands out or goes under the net</p></div>
-        </div>
+<section class="slide " data-slide="3" aria-label="Equipment, cost, and facilities"><div class="slide-full"><div><div class="eyebrow">03 / Getting set up</div><h2 class="slide-title">Equipment, cost, and facilities</h2><ul class="points"><li><b>Equipment:</b> a takraw ball, a net, and flat-soled sneakers. Share one ball per regu (team of three).</li><li><b>Facility:</b> a gym with badminton courts. A badminton court is the same 13.4 m × 6.1 m size, and a regulation badminton net already sits at men's takraw height.</li><li><b>DIY:</b> no courts? Tape a 6.1 m-wide court and string a rope at about 1.5 m. A light volleyball or beach ball works for practice.</li><li><b>Check first:</b> tighten nets, clear the walls behind each court, and confirm everyone has closed-toe shoes.</li></ul><details><summary>Sample class budget / 39 students</summary><div class="detail-content"><div class="table-wrap"><table class="data wide"><thead><tr><th scope="col">Item</th><th scope="col">Allowance</th></tr></thead><tbody><tr><td>13 training balls × $15</td><td>$195</td></tr><tr><td>1 competition ball for the demo</td><td>$35</td></tr><tr><td>Floor tape + paper/pencils</td><td>$15 + $10</td></tr><tr><td>Total</td><td>$255</td></tr><tr><td>Use the school's light volleyballs instead</td><td>$25 additional supplies</td></tr></tbody></table></div><p class="credit-note">Illustrative budget, not a current price quote. Tax/shipping excluded. Badminton nets, posts, cones, a timer, and a video display are assumed available. Players at home: takraw shoes $30–$90, knee pads $15–$35.</p></div></details></div></div></section>
 
-        <h3 class="sub">Beginner tips</h3>
-        <ul class="tips">
-          <li><strong>Start with juggling.</strong> Keep the ball up with the inside of your foot (the "inside kick"). It's the bread-and-butter touch.</li>
-          <li><strong>Stretch your hips and hamstrings.</strong> Seriously. Spiking is basically a gymnastics move.</li>
-          <li><strong>Learn the sunback spike before the roll spike.</strong> It's way easier on your body and you'll land on your feet.</li>
-          <li><strong>Use a practice ball first.</strong> Competition balls are hard. A softer one saves your feet while you learn.</li>
-        </ul>
-      </div>
-    </section>
+<section class="slide " data-slide="4" aria-label="Court and kicking skills"><div class="slide-grid"><div><div class="eyebrow">04 / How it works</div><h2 class="slide-title">Court and kicking skills</h2><ul class="points"><li><b>Goal:</b> make the ball land on the other side. Each side gets up to 3 touches. The same player may touch it more than once.</li><li><b>Inside kick:</b> the main touch. Lift the ball with the inside of the foot, knee bent out, toes up.</li><li><b>Other legal touches:</b> instep, sole, knee, chest, and head. Never hands or arms.</li><li><b>Positions:</b> the <i>tekong</i> serves from the circle. The feeder sets, and the striker attacks at the net.</li></ul><details><summary>Official measurements and scoring</summary><div class="detail-content"><p class="lede"><b>Net:</b> 1.52 m at center for men, 1.42 m for women. <b>Ball:</b> 42–44 cm around, 170–180 g (men's).<br/><b>Service circle:</b> 30 cm radius, 2.45 m from the back line.</p><p class="lede"><b>Scoring:</b> rally point. Best of 3 sets to 21, win by 2, capped at 25.<br/><b>Serve:</b> a teammate tosses by hand, and the tekong kicks it over. Teams alternate serving every three points.</p></div></details><p class="credit-note">Official ISTAF-style measurements. Class courts and nets can be adapted on slide 5.</p></div><figure class="diagram"><svg viewBox="0 0 500 360" role="img" aria-labelledby="courtTitle courtDesc"><title id="courtTitle">Sepak takraw court</title><desc id="courtDesc">A 13.4 metre by 6.1 metre court split by a net into two 6.7 metre halves. Each half has a service circle near the back line. On the left half, the tekong stands in the circle and the feeder and striker stand near the net.</desc><rect x="40" y="70" width="420" height="190" rx="6" fill="#fcebdd" stroke="#b9480f" stroke-width="3"/><path d="M250 58V272" stroke="#14231b" stroke-width="4" stroke-dasharray="7 4"/><text x="236" y="50" class="dlabel">Net</text><circle cx="117" cy="165" r="18" fill="none" stroke="#b9480f" stroke-width="2"/><circle cx="383" cy="165" r="18" fill="none" stroke="#b9480f" stroke-width="2"/><circle cx="117" cy="165" r="9" fill="#e9a23b" stroke="#fff" stroke-width="2"/><circle cx="215" cy="110" r="9" fill="#0f766e" stroke="#fff" stroke-width="2"/><circle cx="215" cy="220" r="9" fill="#b9480f" stroke="#fff" stroke-width="2"/><text x="88" y="203" class="dsub">Tekong</text><text x="190" y="95" class="dsub">Feeder</text><text x="192" y="246" class="dsub">Striker</text><text x="350" y="125" class="dsub">Opponents</text><text x="200" y="300" class="dlabel">13.4 m long</text><text x="470" y="170" class="dlabel" transform="rotate(90 470 170)">6.1 m wide</text><text x="40" y="327" class="dsub">Each half: 6.7 m / service circle radius: 30 cm</text><text x="40" y="350" class="dsub">Same footprint as a doubles badminton court / not to scale</text></svg></figure></div></section>
 
-    <!-- TEAM -->
-    <section id="team" class="section">
-      <div class="container">
-        <h2>Team size &amp; positions</h2>
-        <p class="section-lede">A sepak takraw team is called a <strong>regu</strong>. The standard format is 3 on 3.</p>
+<section class="slide " data-slide="5" aria-label="Rules, safety, and modifications"><div class="slide-full"><div><div class="eyebrow">05 / Playing in class</div><h2 class="slide-title">Rules, safety, and modifications</h2><ul class="cues"><li><b>Class rules</b>Three touches per side, no hands or arms. Serve with a hand toss from a teammate. Don't touch the net or cross under it. Rally scoring.</li><li><b>Scoring</b>Class games go to 7, win by 1. A ball that lands in counts, as does any fault by the other side. Rotate the server every point so everyone serves.</li><li><b>Safety</b>No bicycle kicks, roll spikes, or jumping attacks in class. Feet stay below shoulder height near others. Wait 2 m back from active courts. Warm up hips and hamstrings, and stop on "Freeze."</li><li><b>Modifications</b>Use a light volleyball or beach ball. Allow one catch per side, or one bounce between touches. Lower the net or shorten the court. Add a seated or hands-allowed role. Remove the catch for more challenge.</li></ul><p class="credit-note">These are classroom rules and adaptations. Official play uses sets to 21. Agree on each regu's modifications before scoring.</p></div></div></section>
 
-        <div class="formats">
-          <article class="format featured">
-            <p class="format-tag">Standard</p>
-            <h3>Regu</h3>
-            <p class="format-num">3 v 3</p>
-            <p>3 players on court, plus up to 2 subs, so a roster of <strong>5</strong>. This is what you'll see at the Asian Games.</p>
-          </article>
-          <article class="format">
-            <p class="format-tag">Smaller</p>
-            <h3>Doubles</h3>
-            <p class="format-num">2 v 2</p>
-            <p>2 players on court plus a sub. Faster, way more running, popular for beach and casual play.</p>
-          </article>
-          <article class="format">
-            <p class="format-tag">Bigger</p>
-            <h3>Quadrant</h3>
-            <p class="format-num">4 v 4</p>
-            <p>4 players on court plus 1 sub. Newer format with longer rallies and more defense.</p>
-          </article>
-          <article class="format">
-            <p class="format-tag">Tournament</p>
-            <h3>Team event</h3>
-            <p class="format-num">3 regus</p>
-            <p>A "team" is three separate regus, about 12–15 players total. Win 2 of the 3 regu matches to win the tie.</p>
-          </article>
-        </div>
+<section class="slide " data-slide="6" aria-label="One-day lesson"><div class="slide-full"><div><div class="eyebrow">06 / 39 students, 52 minutes</div><h2 class="slide-title">One-day lesson</h2><ol class="timeline"><li><div class="tl-head"><span class="tl-time">0–8 min</span><span class="tl-activity">Intro and video</span></div><p class="tl-task">Goal and rules, then ~2 minutes of the rules video.</p></li><li><div class="tl-head"><span class="tl-time">8–13 min</span><span class="tl-activity">Warm-up</span></div><p class="tl-task">Jog 2 min, leg swings 1 min, hip circles 1 min, hamstring stretch 1 min.</p></li><li><div class="tl-head"><span class="tl-time">13–18 min</span><span class="tl-activity">Teacher demonstration</span></div><p class="tl-task">Safe area, inside kick, knee touch, serve toss, scoring, and Freeze.</p></li><li><div class="tl-head"><span class="tl-time">18–28 min</span><span class="tl-activity">Skills / drills</span></div><p class="tl-task">Self toss-and-kick, then regu keep-up circles. Five observed inside kicks each.</p></li><li><div class="tl-head"><span class="tl-time">28–36 min</span><span class="tl-activity">Modified play</span></div><p class="tl-task">Catch allowed, lowered net, feedback without competition.</p></li><li><div class="tl-head"><span class="tl-time">36–46 min</span><span class="tl-activity">Game</span></div><p class="tl-task">Regu vs. regu games to 7. Rotate courts and the keep-up station.</p></li><li><div class="tl-head"><span class="tl-time">46–52 min</span><span class="tl-activity">Quiz and closure</span></div><p class="tl-task">Quiz 4 min, then a cue, a safety rule, and cleanup.</p></li></ol><details><summary>Lesson details and teacher demonstration</summary><div class="detail-content"><p class="lede"><b>Objectives:</b> perform a controlled inside kick (ball rises to about head height and stays catchable) in 3 of 5 attempts. Keep score accurately and follow the safety rules.</p><p class="lede"><b>Organization:</b> 13 regus of three. Rotate tekong, feeder, and striker each game. Use 4 badminton courts (8 regus playing) plus a keep-up station along the wall (5 regus). Rotate after every game.</p><p class="lede"><b>Drill:</b> each student self-tosses and kicks with the inside of the foot, then catches, 10 times. Next, each regu keeps the ball up in a circle (one catch allowed) and counts touches. Then observe five inside kicks per student.</p><p class="lede"><b>Game:</b> modified play first (catch allowed, lower net), then remove the catch if a regu is ready. Games to 7, win by 1.</p><p class="lede"><b>Teacher:</b> set a 2 m waiting zone behind each court. Demonstrate the inside kick: knee out, toes up, contact under the ball, eyes on it. Show a knee touch and a header. Model the serve toss to the tekong, a point being scored, and Freeze. Ask students to repeat the cues, then coach one correction at a time.</p></div></details><details><summary>Written assignment / 10-point quiz</summary><div class="detail-content"><p class="lede">Name: ____________________ &nbsp; Date: __________<br/>One point per question.</p><ol class="worksheet"><li>Which body parts are not allowed to touch the ball?<span class="answer-line"></span></li><li>Name the international sepak takraw federation.<span class="answer-line"></span></li><li>How many players are on court for a regu?<span class="answer-line"></span></li><li>What is the maximum number of touches per side?<span class="answer-line"></span></li><li>What is the server called?<span class="answer-line"></span></li><li>Which kick uses the inside of the foot and is the main touch?<span class="answer-line"></span></li><li>Name one safety rule from our class.<span class="answer-line"></span></li><li>What court from another sport is the same size as a takraw court?<span class="answer-line"></span></li><li>In official play, how many points win a set?<span class="answer-line"></span></li><li>Name a modification that helps a beginner.<span class="answer-line"></span></li></ol></div></details><details><summary>Quiz answer key</summary><div class="detail-content"><div class="table-wrap"><table class="data wide"><thead><tr><th scope="col">Question</th><th scope="col">Answer</th></tr></thead><tbody><tr><td>1</td><td>Hands and arms.</td></tr><tr><td>2</td><td>ISTAF (International Sepaktakraw Federation).</td></tr><tr><td>3</td><td>3.</td></tr><tr><td>4</td><td>3 touches.</td></tr><tr><td>5</td><td>The tekong.</td></tr><tr><td>6</td><td>The inside kick (sepak sila).</td></tr><tr><td>7</td><td>No bicycle kicks or jumping attacks, feet below shoulder height, wait 2 m back, warm up, or stop on Freeze.</td></tr><tr><td>8</td><td>A doubles badminton court.</td></tr><tr><td>9</td><td>21 (win by 2, capped at 25).</td></tr><tr><td>10</td><td>Lighter ball, one catch, one bounce, lower net, or smaller court.</td></tr></tbody></table></div><p class="credit-note">Accept equivalent wording. Question 6: accept "inside kick" without the Malay term.</p></div></details><details><summary>Evaluation / score sheet and peer check</summary><div class="detail-content"><div class="table-wrap"><table class="data wide"><thead><tr><th scope="col">Regu</th><th scope="col">Game 1</th><th scope="col">Game 2</th><th scope="col">Game 3</th><th scope="col">Wins</th></tr></thead><tbody><tr><td>________________</td><td>____</td><td>____</td><td>____</td><td>____</td></tr><tr><td>________________</td><td>____</td><td>____</td><td>____</td><td>____</td></tr><tr><td>________________</td><td>____</td><td>____</td><td>____</td><td>____</td></tr></tbody></table></div><p class="lede">Write each game score as "us–them," for example 7–5. Games to 7, win by 1. Keep scores blank until students play.</p><p class="lede">Player: _________________ Observer: _________________</p><div class="table-wrap"><table class="data wide"><thead><tr><th scope="col">Attempt</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th></tr></thead><tbody><tr><td>All three cues? Y/N</td><td>___</td><td>___</td><td>___</td><td>___</td><td>___</td></tr></tbody></table></div><p class="lede">Mark Yes for knee out with toes up, contact with the inside of the foot, and a ball that rises to about head height. Target: 3 of 5.<br/>Strength: ____________________<br/>Adjustment: ____________________<br/>Adaptation: ____________________</p></div></details></div></div></section>
 
-        <h3 class="sub">Positions in a regu</h3>
-        <div class="court-wrap">
-          <svg class="court" viewBox="0 0 440 220" role="img" aria-label="Half court diagram with the tekong at the back and two inside players at the net">
-            <rect x="10" y="10" width="420" height="200" rx="4" class="court-bg"/>
-            <line x1="220" y1="10" x2="220" y2="210" class="court-net"/>
-            <text x="226" y="26" class="court-text">NET</text>
-            <circle cx="100" cy="110" r="22" class="court-circle"/>
-            <circle cx="100" cy="110" r="14" class="player p-tekong"/>
-            <text x="100" y="150" class="court-label" text-anchor="middle">Tekong</text>
-            <circle cx="180" cy="55" r="14" class="player p-feeder"/>
-            <text x="180" y="88" class="court-label" text-anchor="middle">Feeder</text>
-            <circle cx="180" cy="165" r="14" class="player p-striker"/>
-            <text x="180" y="198" class="court-label" text-anchor="middle">Striker</text>
-            <text x="330" y="115" class="court-text" text-anchor="middle">Opponents' side</text>
-          </svg>
-        </div>
-        <div class="positions">
-          <div class="position"><span class="dot p-tekong"></span><h4>Tekong (server)</h4><p>Plays at the back. Serves every point and covers deep defense. Needs a powerful, accurate kick.</p></div>
-          <div class="position"><span class="dot p-feeder"></span><h4>Feeder (setter)</h4><p>Front of the court, one side of the net. Tosses the ball for the serve and sets up the spiker. Needs soft, precise touch.</p></div>
-          <div class="position"><span class="dot p-striker"></span><h4>Striker (killer)</h4><p>Front of the court, other side. Spikes and blocks. Usually the most acrobatic player on the team.</p></div>
-        </div>
-      </div>
-    </section>
+<section class="slide " data-slide="7" aria-label="Sepak takraw in action"><div class="slide-full"><div><div class="eyebrow">07 / Rules video</div><h2 class="slide-title">Sepak takraw in action</h2><p class="lede"><b>The Rules of Sepak Takraw - EXPLAINED!</b><br/>Ninh Ly</p><p><a class="action-link" href="https://www.youtube.com/watch?v=2MyTJopbo4Y" target="_blank" rel="noopener">Watch the sepak takraw video ↗</a></p><ul class="points"><li>Watch about two minutes of the rules and highlights.</li><li>How does the regu use its three touches to set up an attack?</li><li>Which moves from the video are not allowed in our class, and why?</li></ul><p class="credit-note">Ninh Ly, via YouTube. Preview the clip and verify classroom access before presenting.</p><details><summary>Sources and rubric coverage</summary><div class="detail-content"><p class="lede">History and organizations: slide 2. Equipment, cost/DIY, and facilities: slide 3. Measurements, physical skills, and participation knowledge: slide 4. Rules, safety, and modifications: slide 5. Lesson plan, written assignment, evaluation, and teacher instructions: slide 6. Video: slide 7.</p><p class="lede">History, measurements, and scoring come from the Wikipedia articles linked on slide 2, which summarize ISTAF rules. The cover credits Ekrem Canli's photo and its CC BY-SA 4.0 license.</p><p class="credit-note">The lesson follows the unit's 39-student, 52-minute format. Budgets, class rules, and game scoring are proposed school adaptations.</p></div></details></div></div></section>
+</main>
 
-    <!-- EQUIPMENT -->
-    <section id="equipment" class="section section-alt">
-      <div class="container">
-        <h2>Equipment &amp; prices</h2>
-        <p class="section-lede">Good news: this is a cheap sport. Prices below are typical US retail ranges in USD and move around a lot by brand and where you buy (they're often much cheaper in Southeast Asia).</p>
+<nav class="dots" id="dots" aria-label="Slide navigation"></nav>
 
-        <div class="gear-grid">
-          <article class="gear">
-            <div class="gear-head"><span class="gear-icon" aria-hidden="true">⚽</span><span class="badge req">Required</span></div>
-            <h3>Takraw ball</h3>
-            <p>Made from woven synthetic plastic (traditionally rattan) with 12 holes. Men's balls weigh about 170–180 g, women's 150–160 g. Marathon is the big official brand.</p>
-            <ul class="price-list">
-              <li><span>Practice / recreational</span><span>$10–$20</span></li>
-              <li><span>Competition (federation-approved)</span><span>$25–$45</span></li>
-            </ul>
-          </article>
+<div class="controls">
+  <button class="nav-btn" id="prevBtn" aria-label="Previous slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="nav-btn" id="nextBtn" aria-label="Next slide">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+</div>
 
-          <article class="gear">
-            <div class="gear-head"><span class="gear-icon" aria-hidden="true">🥅</span><span class="badge req">Required</span></div>
-            <h3>Net</h3>
-            <p>About 6.1 m wide and 70 cm tall. A badminton net works in a pinch, but it's a bit thinner and shorter.</p>
-            <ul class="price-list">
-              <li><span>Net only</span><span>$30–$80</span></li>
-              <li><span>Portable net + posts set</span><span>$100–$300</span></li>
-            </ul>
-          </article>
+<div class="print-tools"><button class="print-btn" id="printProject">Print project</button></div>
+<div class="hint">
+  Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> or <kbd>Space</kbd> to navigate &middot; <kbd>F</kbd> for fullscreen
+</div>
 
-          <article class="gear">
-            <div class="gear-head"><span class="gear-icon" aria-hidden="true">👟</span><span class="badge req">Required</span></div>
-            <h3>Shoes</h3>
-            <p>Light, flat, flexible soles with a thin upper so you can feel the ball. Indoor soccer (futsal) shoes are a solid substitute.</p>
-            <ul class="price-list">
-              <li><span>Takraw or futsal shoes</span><span>$30–$90</span></li>
-            </ul>
-          </article>
+<script>
+  document.querySelectorAll('img').forEach(img => {
+    const showCaption = () => { img.hidden = true; };
+    img.addEventListener('error', showCaption);
+    if (img.complete && img.naturalWidth === 0) showCaption();
+  });
+  document.getElementById('printProject').addEventListener('click', () => {
+    document.body.classList.remove('print-handouts'); window.print();
+  });
+  let printDetails = [];
+  window.addEventListener('beforeprint', () => {
+    printDetails = [...document.querySelectorAll('details')].filter(d => !d.open);
+    printDetails.forEach(d => d.open = true);
+  });
+  window.addEventListener('afterprint', () => {
+    printDetails.forEach(d => d.open = false); printDetails = [];
+  });
 
-          <article class="gear">
-            <div class="gear-head"><span class="gear-icon" aria-hidden="true">🦵</span><span class="badge rec">Recommended</span></div>
-            <h3>Knee pads</h3>
-            <p>You will hit the floor after spikes and diving saves. Volleyball knee pads are perfect.</p>
-            <ul class="price-list">
-              <li><span>Pair</span><span>$15–$35</span></li>
-            </ul>
-          </article>
+  // Loading screen: show briefly on first load
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      const loader = document.getElementById('loader');
+      if (loader) loader.classList.add('hidden');
+    }, 1500);
+  });
 
-          <article class="gear">
-            <div class="gear-head"><span class="gear-icon" aria-hidden="true">🩹</span><span class="badge rec">Recommended</span></div>
-            <h3>Ankle support</h3>
-            <p>Braces or athletic tape. Landings and quick direction changes are rough on ankles.</p>
-            <ul class="price-list">
-              <li><span>Ankle brace (each)</span><span>$10–$30</span></li>
-              <li><span>Athletic tape (roll)</span><span>$5–$10</span></li>
-            </ul>
-          </article>
+  const slides = document.querySelectorAll('.slide');
+  const dotsWrap = document.getElementById('dots');
+  const progressBar = document.getElementById('progressBar');
+  const currentNum = document.getElementById('currentNum');
+  const totalNum = document.getElementById('totalNum');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
 
-          <article class="gear">
-            <div class="gear-head"><span class="gear-icon" aria-hidden="true">👕</span><span class="badge opt">Optional</span></div>
-            <h3>Team kit</h3>
-            <p>Lightweight shirt and shorts. Competitions want matching numbered jerseys; casual games don't care.</p>
-            <ul class="price-list">
-              <li><span>Jersey + shorts</span><span>$20–$50</span></li>
-            </ul>
-          </article>
+  const total = slides.length;
+  totalNum.textContent = String(total).padStart(2, '0');
+  let idx = 0;
 
-          <article class="gear">
-            <div class="gear-head"><span class="gear-icon" aria-hidden="true">📏</span><span class="badge opt">Optional</span></div>
-            <h3>Court marking tape</h3>
-            <p>Only needed if you aren't on a badminton court. Tape out a 13.4 × 6.1 m court and the service circles.</p>
-            <ul class="price-list">
-              <li><span>Floor tape kit</span><span>$10–$25</span></li>
-            </ul>
-          </article>
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'dot';
+    b.setAttribute('aria-label', 'Go to slide ' + (i + 1) + ': ' + slides[i].getAttribute('aria-label'));
+    b.addEventListener('click', () => go(i));
+    dotsWrap.appendChild(b);
+  });
+  const dots = dotsWrap.querySelectorAll('.dot');
 
-          <article class="gear">
-            <div class="gear-head"><span class="gear-icon" aria-hidden="true">🎽</span><span class="badge opt">Optional</span></div>
-            <h3>Shin guards &amp; socks</h3>
-            <p>Thin shin guards help when blocking spikes. Grippy socks help on smooth floors.</p>
-            <ul class="price-list">
-              <li><span>Shin guards</span><span>$10–$25</span></li>
-              <li><span>Grip socks</span><span>$8–$20</span></li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
+  function go(i) {
+    idx = Math.max(0, Math.min(total - 1, i));
+    slides.forEach((s, j) => { s.classList.toggle('active', j === idx); s.inert = j !== idx; });
+    dots.forEach((d, j) => { d.classList.toggle('active', j === idx); if (j === idx) d.setAttribute('aria-current', 'step'); else d.removeAttribute('aria-current'); });
+    progressBar.style.width = ((idx + 1) / total) * 100 + '%';
+    currentNum.textContent = String(idx + 1).padStart(2, '0');
+    prevBtn.disabled = idx === 0;
+    nextBtn.disabled = idx === total - 1;
+    if (location.hash !== '#' + (idx + 1)) {
+      history.replaceState(null, '', '#' + (idx + 1));
+    }
+  }
+  function next() { go(idx + 1); }
+  function prev() { go(idx - 1); }
 
-    <!-- CALCULATOR -->
-    <section id="calculator" class="section">
-      <div class="container">
-        <h2>Starter kit cost calculator</h2>
-        <p class="section-lede">Pick your gear and team size and get a rough budget. Uses the midpoint of each price range above.</p>
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
 
-        <form class="calc" id="calc">
-          <div class="calc-controls">
-            <label class="calc-players">
-              <span>Players</span>
-              <input type="number" id="players" min="1" max="30" value="3">
-            </label>
-            <fieldset>
-              <legend>Shared by the group</legend>
-              <label><input type="checkbox" data-price="35" data-shared checked> Competition ball <em>$35</em></label>
-              <label><input type="checkbox" data-price="15" data-shared> Practice ball <em>$15</em></label>
-              <label><input type="checkbox" data-price="55" data-shared checked> Net only <em>$55</em></label>
-              <label><input type="checkbox" data-price="200" data-shared> Net + posts set <em>$200</em></label>
-              <label><input type="checkbox" data-price="18" data-shared> Court marking tape <em>$18</em></label>
-            </fieldset>
-            <fieldset>
-              <legend>Per player</legend>
-              <label><input type="checkbox" data-price="60" checked> Shoes <em>$60</em></label>
-              <label><input type="checkbox" data-price="25" checked> Knee pads <em>$25</em></label>
-              <label><input type="checkbox" data-price="20"> Ankle brace <em>$20</em></label>
-              <label><input type="checkbox" data-price="35"> Jersey + shorts <em>$35</em></label>
-              <label><input type="checkbox" data-price="18"> Shin guards <em>$18</em></label>
-            </fieldset>
-          </div>
-          <div class="calc-result" aria-live="polite">
-            <p class="calc-label">Estimated total</p>
-            <p class="calc-total" id="total">$0</p>
-            <p class="calc-per" id="per">$0 per player</p>
-            <p class="calc-note">Just an estimate. Already own sneakers that work? Uncheck shoes and watch the number drop.</p>
-          </div>
-        </form>
-      </div>
-    </section>
-  </main>
+  document.addEventListener('keydown', (e) => {
+    if (e.target.closest('input, textarea, select, button, a, summary, [contenteditable=true]')) return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      e.preventDefault(); next();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault(); prev();
+    } else if (e.key === 'Home') {
+      e.preventDefault(); go(0);
+    } else if (e.key === 'End') {
+      e.preventDefault(); go(total - 1);
+    } else if (e.key === 'f' || e.key === 'F') {
+      e.preventDefault();
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen && document.exitFullscreen();
+      }
+    }
+  });
 
-  <footer class="footer">
-    <div class="container">
-      <p>Rules summarized from common international (ISTAF-style) play. Local leagues may tweak scoring and serve rules. Prices are estimates and change over time.</p>
-      <p><a href="#top">Back to top ↑</a></p>
-    </div>
-  </footer>
+  let touchX = null, touchY = null;
+  document.addEventListener('touchstart', (e) => { if (e.target.closest('.table-wrap, button, a')) { touchX = null; return; } touchX = e.changedTouches[0].clientX; touchY = e.changedTouches[0].clientY; }, { passive: true });
+  document.addEventListener('touchend', (e) => {
+    if (touchX == null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? next() : prev(); }
+    touchX = null;
+  }, { passive: true });
 
-  <script src="script.js"></script>
+  function fromHash() {
+    const n = parseInt((location.hash || '#1').slice(1), 10);
+    go(Number.isFinite(n) ? n - 1 : 0);
+  }
+  window.addEventListener('hashchange', fromHash);
+
+  fromHash();
+  if (!location.hash) go(0);
+</script>
 </body>
 </html>
